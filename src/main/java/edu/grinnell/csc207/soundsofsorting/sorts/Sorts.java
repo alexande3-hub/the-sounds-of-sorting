@@ -237,4 +237,10 @@ public class Sorts {
         }
         return lst;
     }
+
+    public <T> void eventSort(T[] l, List<SortEvent<T>> events) {
+        for(int i = 0; i < events.size(); i++) {
+            
+        }
+    } 
 }
