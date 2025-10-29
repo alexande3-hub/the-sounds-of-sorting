@@ -24,8 +24,13 @@ public class ArrayPanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        int num = getWidth() / notes.n;
+        int num2 = getHeight() / notes.n;
         for (int i = 0; i < notes.n; i++) {
-            
+            g.drawRect(num * i, 0, num, num2 * (i + 1));
+            if (notes.isHighlighted(i)) {
+                g.fillRect(num * i, 0, num, num2 * (i + 1));
+            }
         }
     }
 }
