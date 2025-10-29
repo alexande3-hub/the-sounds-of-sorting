@@ -153,7 +153,11 @@ public class ControlPanel extends JPanel {
                     public void run() {
                         if (index < events.size()) {
                             SortEvent<Integer> e = events.get(index++);
-                            // TODO: fill me in!
+                            e.apply(notes.getNotes());
+                            for(int i = 0; i < e.getAffectedIndices().size(); i++) {
+                                scale.playNote(i, true);
+                                notes.highlightNote(i);
+                            }
                             // 1. Apply the next sort event.
                             // 3. Play the corresponding notes denoted by the
                             //    affected indices logged in the event.

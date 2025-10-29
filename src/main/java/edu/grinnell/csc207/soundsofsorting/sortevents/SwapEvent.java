@@ -10,7 +10,7 @@ public class SwapEvent<T> implements SortEvent<T>{
     public int ind1;
     public int ind2;
 
-    SwapEvent(int ind1, int ind2) {
+    public SwapEvent(int ind1, int ind2) {
         this.ind1 = ind1;
         this.ind2 = ind2;
     }

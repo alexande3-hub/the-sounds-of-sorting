@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.grinnell.csc207.soundsofsorting.sortevents.CompareEvent;
+import edu.grinnell.csc207.soundsofsorting.sortevents.CopyEvent;
 import edu.grinnell.csc207.soundsofsorting.sortevents.SortEvent;
+import edu.grinnell.csc207.soundsofsorting.sortevents.SwapEvent;
 
 /**
  * A collection of sorting algorithms.
@@ -37,12 +40,14 @@ public class Sorts {
         for (int i = (arr.length - 1); i >= 0; i--) {
             int max = i;
             for (int j = (i - 1); j >= 0; j--) {
+                lst.add(new CompareEvent<T>(max, j));
                 if (arr[max].compareTo(arr[j]) == -1) {
                     max = j;
                 }
             }
             for (int k = max; k < (arr.length - 1); k++) {
                 swap(arr, k, (k + 1));
+                lst.add(new SwapEvent<T>(k, (k + 1)));
             }
         }
         return lst;
@@ -63,10 +68,12 @@ public class Sorts {
         for (int i = 0; i < arr.length; i++) {
             int min = i;
             for (int j = (i + 1); j < arr.length; j++) {
+                lst.add(new CompareEvent<T>(min, j));
                 if (arr[min].compareTo(arr[j]) == 1) {
                     min = j;
                 }
             } swap(arr, i, min);
+            lst.add(new SwapEvent<T>(i, min));
         }
         return lst;
     }
@@ -86,11 +93,14 @@ public class Sorts {
         for (int i = 1; i < arr.length; i++) {
             int index = 0;
             T cur = arr[i];
+            lst.add(new CompareEvent<T>(index, i));
             while (arr[index].compareTo(arr[i]) == -1) {
                 index++;
             } for (int j = i; j > index; j--) {
                 swap(arr, j, (j - 1));
+                lst.add(new SwapEvent<T>(j, (j - 1)));
             } arr[index] = cur;
+            lst.add(new CopyEvent<T>(index, cur));
         }
         return lst;
     }
@@ -111,8 +121,10 @@ public class Sorts {
      public static <T extends Comparable<? super T>> void mergeSortHelper(T[] arr, T[] tempArr, 
             int ind1, int ind2, List<SortEvent<T>> lst) {
         if (ind2 - ind1 == 1) {
+            lst.add(new CompareEvent<T>(ind1, ind2));
             if (arr[ind1].compareTo(arr[ind2]) == 1) {
                 swap(arr, ind1, ind2);
+                lst.add(new SwapEvent<T>(ind1, ind2));
             }
         } else if (ind2 - ind1 > 1) {
             mergeSortHelper(arr, tempArr, 0, (ind2 - (ind2 / 2)), lst);
@@ -121,11 +133,14 @@ public class Sorts {
             int i1 = ind1;
             int i2 = ((ind2 - ind1) - ((ind2 - ind1) / 2) + ind1);
             for (int i = ind1; i < ind2; i++) {
+                lst.add(new CompareEvent<T>(i2, i1));
                 if (tempArr[i2].compareTo(tempArr[i1]) == -1) {
                     arr[i] = tempArr[ind2];
+                    lst.add(new CopyEvent<T>(i2, tempArr[ind2]));
                     i2++;
                 } else {
                     arr[i] = tempArr[ind1];
+                    lst.add(new CopyEvent<T>(i1, tempArr[ind1]));
                     i1++;
                 }
             }
@@ -164,8 +179,10 @@ public class Sorts {
      public static <T extends Comparable<? super T>> void quickSortHelper(T[] arr, T[] tempArr, 
             int ind1, int ind2, List<SortEvent<T>> lst) {
         if (ind2 - ind1 == 1) {
+            lst.add(new CompareEvent<T>(ind1, ind2));
             if (arr[ind1].compareTo(arr[ind2]) == 1) {
                 swap(arr, ind1, ind2);
+                lst.add(new SwapEvent<T>(ind1, ind2));
             }
         } else if (ind2 - ind1 > 1) {
             T[] ignoreArr = Arrays.copyOfRange(tempArr, ind1, ind2);
@@ -176,9 +193,11 @@ public class Sorts {
             for (int i = ind1; i < ind2; i++) {
                 if (tempArr[i].compareTo(median) == 1) {
                     arr[i2] = tempArr[i];
+                    lst.add(new CopyEvent<T>(i2, tempArr[i]));
                     i2++;
                 } else {
                     arr[i1] = tempArr[i];
+                    lst.add(new CopyEvent<T>(i1, tempArr[i]));
                     i1++;
                 }
             }
@@ -216,21 +235,25 @@ public class Sorts {
         while (i > (arr.length / 2)) {
             int max = i;
             for (int k = (i - 1); k >= 0; k--) {
+                lst.add(new CompareEvent<T>(max, k));
                 if (arr[max].compareTo(arr[k]) == -1) {
                     max = k;
                 }
             }
             for (int l = max; l < (arr.length - 1); l++) {
                 swap(arr, l, (l + 1));
+                lst.add(new SwapEvent<T>(l, (l + 1)));
             }
             int min = j;
             for (int m = (j + 1); m < arr.length; m++) {
+                lst.add(new CompareEvent<T>(min, m));
                 if (arr[min].compareTo(arr[m]) == 1) {
                     min = m;
-                }
+                } 
             }
             for (int n = min; n > 0; n--) {
                 swap(arr, n, (n - 1));
+                lst.add(new SwapEvent<T>(n, (n - 1)));
             }
             i--;
             j++;
@@ -240,7 +263,7 @@ public class Sorts {
 
     public <T> void eventSort(T[] l, List<SortEvent<T>> events) {
         for(int i = 0; i < events.size(); i++) {
-            
+            events.get(i).apply(l);
         }
     } 
 }

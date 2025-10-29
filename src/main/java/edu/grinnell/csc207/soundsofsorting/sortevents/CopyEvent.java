@@ -10,7 +10,7 @@ public class CopyEvent<T> implements SortEvent<T> {
     public int i;
     public T val;
 
-    CopyEvent(int i, T val) {
+    public CopyEvent(int i, T val) {
         this.i = i;
         this.val = val;
     }

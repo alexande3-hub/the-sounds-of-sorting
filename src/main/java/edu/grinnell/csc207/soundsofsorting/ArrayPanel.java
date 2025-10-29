@@ -24,6 +24,8 @@ public class ArrayPanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        // TODO: fill me in!
+        for (int i = 0; i < notes.n; i++) {
+            
+        }
     }
 }
