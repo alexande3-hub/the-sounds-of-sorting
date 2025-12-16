@@ -34,18 +34,20 @@ public class NoteIndices {
      * @param n the size of the scale object that these indices map into
      */
     public void initializeAndShuffle(int n) {
-        for (int i = 0; i < n; i++) {
-            arr[i] = i;
-            arr2[i] = false;
-        }
-        for (int i = arr.length - 1; i >= 0; i--) {
-            int j = rand.nextInt(n);
-            Integer temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-            Boolean temp2 = arr2[i];
-            arr2[i] = arr2[j];
-            arr2[j] = temp2;
+        if (n > 0) {
+            this.n = n;
+            this.arr = new Integer[n];
+            this.arr2 = new Boolean[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = i;
+                arr2[i] = false;
+            }
+            for (int i = arr.length - 1; i >= 0; i--) {
+                int j = rand.nextInt(n);
+                Integer temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
         }
     }
     
@@ -67,11 +69,7 @@ public class NoteIndices {
      * @return true if the given index is highlighted
      */
     public boolean isHighlighted(int index) {
-        if (arr2[index] == true) {
-            return true;
-        } else {
-            return false;
-        }
+        return arr2[index];
     }
     
     /** Clears all highlighted indices from this collection */
