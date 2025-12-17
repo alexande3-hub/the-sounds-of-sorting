@@ -247,7 +247,7 @@ public class Sorts {
         int j = 0;
         while (i > (arr.length / 2)) {
             int max = i;
-            for (int k = (i - 1); k >= 0; k--) {
+            for (int k = (i - 1); k >= j; k--) {
                 lst.add(new CompareEvent<T>(max, k));
                 if (arr[max].compareTo(arr[k]) == -1) {
                     max = k;
@@ -258,7 +258,7 @@ public class Sorts {
                 lst.add(new SwapEvent<T>(l, (l + 1)));
             }
             int min = j;
-            for (int m = (j + 1); m < arr.length; m++) {
+            for (int m = (j + 1); m <= i; m++) {
                 lst.add(new CompareEvent<T>(min, m));
                 if (arr[min].compareTo(arr[m]) == 1) {
                     min = m;
